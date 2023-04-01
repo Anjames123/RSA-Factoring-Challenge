@@ -2,22 +2,29 @@
 
 import sys
 
-def factorize(n):
-    for i in range(2, n):
+def factors(n):
+    """
+    Find all factor pairs of a given integer n.
+    """
+    pairs = []
+    for i in range(2, int(n ** 0.5) + 1):
         if n % i == 0:
-            return (i, n // i)
-    return None
+            pairs.append((i, n // i))
+    return pairs
 
 if __name__ == "__main__":
+    # Check that a file name was provided as argument
     if len(sys.argv) != 2:
         print("Usage: factors <file>")
         sys.exit(1)
-    filename = sys.argv[1]
-    with open(filename, "r") as f:
-        for line in f:
-            n = int(line.strip())
-            factors = factorize(n)
-            if factors:
-                p, q = factors
-                print("{}={}*{}".format(n, p, q))
 
+    # Open the file and read the numbers
+    with open(sys.argv[1], "r") as f:
+        lines = f.readlines()
+
+    # Process each number and print the factorization
+    for line in lines:
+        n = int(line.strip())
+        factor_pairs = factors(n)
+        for p, q in factor_pairs:
+            print(f"{n}={p}*{q}")
